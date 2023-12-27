@@ -16,7 +16,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
+import Icon from 'react-native-vector-icons/AntDesign';
 import {
   Colors,
   DebugInstructions,
@@ -24,6 +24,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Customicon from './src/components/Customicon';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -42,6 +43,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
         ]}>
         {title}Suyash
       </Text>
+
       <Text
         style={[
           styles.sectionDescription,
@@ -76,9 +78,11 @@ function App(): React.JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
+  <Customicon name='home' size = { 25} color = { '#DC3535'} />
+    <Icon name="home" size = { 30} color = "red" />
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
+            screen and then come back to see yourx edits.
           </Section>
           <Section title="See Your Changes">
             <ReloadInstructions />
