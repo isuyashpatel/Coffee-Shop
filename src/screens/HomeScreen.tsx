@@ -42,7 +42,7 @@ const HomeScreen = () => {
 
   return (
     <View>
-    <Text>HomeScreen < /Text>
+      <Text>HomeScreen</Text>
     </View>
   )
 }
