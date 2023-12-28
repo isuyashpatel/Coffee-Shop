@@ -10,6 +10,7 @@ import { BlurView } from '@react-native-community/blur';
 import Icon  from 'react-native-vector-icons/AntDesign';
 import IconEntypo  from 'react-native-vector-icons/Entypo';
 import FontAwesome6  from 'react-native-vector-icons/FontAwesome6';
+
 const Tab =createBottomTabNavigator();
 
 const TabNavigator = () => {
@@ -30,7 +31,7 @@ const TabNavigator = () => {
  >
  <Tab.Screen name='Home' component={HomeScreen}
   options={{
-  tabBarIcon:({focused,color,size})=>(<Icon name='home' size={25} color={focused? COLORS.primaryOrangeHex:COLORS.primaryLightGreyHex}/>)
+  tabBarIcon: ({ focused, color, size }) => (<IconEntypo name= 'home' size = { 25} color = { focused? COLORS.primaryOrangeHex: COLORS.primaryLightGreyHex } />)
  }}></Tab.Screen>
  <Tab.Screen name='Cart' component={CartScreen} options={{
   tabBarIcon:({focused,color,size})=>(
