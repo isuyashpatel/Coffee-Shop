@@ -42,6 +42,7 @@ const HomeScreen = () => {
   const [sortedCoffee, setSortedCoffee] = useState(getCoffeeList(categoryIndex.category, CoffeeList));
 
   const tabBarHeight = useBottomTabBarHeight();
+console.log('cortedCoffee =', sortedCoffee.length);
 
   return (
     <View style={styles.ScreenContainer}>
@@ -55,13 +56,26 @@ const HomeScreen = () => {
         <Text style={styles.ScreenTitle}>Find the best{'\n'}coffee for you</Text>
         {/* SEARCH INPUT */}
         <View style={styles.InputContainerComponent}>
-          <TouchableOpacity onPress={()=>{}}>
-           <Feather style={styles.InputIcon} name='search' size={FONTSIZE.size_18} color={searchText.length>0?COLORS.primaryOrangeHex:COLORS.primaryLightGreyHex}/>
+          <TouchableOpacity onPress={() => { }}>
+            <Feather style={styles.InputIcon} name='search' size={FONTSIZE.size_18} color={searchText.length > 0 ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex} />
           </TouchableOpacity>
-          <TextInput placeholder='Find Your Coffee..' value={searchText} onChangeText={text=>setSearchText(text)} placeholderTextColor={COLORS.primaryLightGreyHex} style={styles.TextInputContainer}/>
+          <TextInput placeholder='Find Your Coffee..' value={searchText} onChangeText={text => setSearchText(text)} placeholderTextColor={COLORS.primaryLightGreyHex} style={styles.TextInputContainer} />
         </View>
 
         {/* CATEGORY SCROLLER */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.CategoryScrollViewStyle}>
+          {categories.map((data, index) => (
+            <View key={index.toString()} style={styles.CategoryScrollViewContainer}>
+              <TouchableOpacity onPress={() => {
+              setCategoryIndex({index:index,category:categories[index]});
+              setSortedCoffee([...getCoffeeList(categories[index],CoffeeList)]);
+            }} style={styles.CategoryScrollViewItem}>
+                <Text style={[styles.CategoryText,categoryIndex.index==index? {color:COLORS.primaryOrangeHex}:{}]}>{data}</Text>
+                {categoryIndex.index == index ? (<View style={styles.ActiveCategory} />) : (<></>)}
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
       </ScrollView>
     </View>
   )
@@ -77,29 +91,52 @@ const styles = StyleSheet.create({
   ScrollViewFlex: {
     flexGrow: 1,
   },
-  ScreenTitle:{
-    fontSize:FONTSIZE.size_20,
-    fontFamily:FONTFAMILY.poppins_semibold,
-    color:COLORS.primaryWhiteHex,
-    paddingLeft:SPACING.space_30,
+  ScreenTitle: {
+    fontSize: FONTSIZE.size_20,
+    fontFamily: FONTFAMILY.poppins_semibold,
+    color: COLORS.primaryWhiteHex,
+    paddingLeft: SPACING.space_30,
   },
-  InputContainerComponent:{
-    flexDirection:'row',
+  InputContainerComponent: {
+    flexDirection: 'row',
     margin: SPACING.space_30,
-    borderRadius:BORDERRADIUS.radius_20,
-    backgroundColor:COLORS.primaryDarkGreyHex,
+    borderRadius: BORDERRADIUS.radius_20,
+    backgroundColor: COLORS.primaryDarkGreyHex,
+    alignItems: 'center'
+  },
+  InputIcon: {
+    marginHorizontal: SPACING.space_20,
+
+  },
+  TextInputContainer: {
+    flex: 1,
+    height: SPACING.space_20 * 3,
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryWhiteHex
+
+  },
+  CategoryScrollViewStyle: {
+    paddingHorizontal:SPACING.space_20,
+    marginBottom:SPACING.space_20
+  },
+  CategoryScrollViewContainer:{
+    paddingHorizontal:SPACING.space_15,
+
+  },
+  CategoryScrollViewItem:{
     alignItems:'center'
   },
-  InputIcon:{
-    marginHorizontal:SPACING.space_20,
-
+  ActiveCategory: {
+    height:SPACING.space_10,
+    width:SPACING.space_10,
+    borderRadius:BORDERRADIUS.radius_10,
+    backgroundColor:COLORS.primaryOrangeHex
   },
-  TextInputContainer:{
-    flex:1,
-    height:SPACING.space_20*3,
-    fontFamily:FONTFAMILY.poppins_medium,
-    fontSize:FONTSIZE.size_14,
-    color:COLORS.primaryWhiteHex
-
+  CategoryText:{
+    fontFamily:FONTFAMILY.poppins_semibold,
+    fontSize:FONTSIZE.size_16,
+    color:COLORS.primaryLightGreyHex,
+    marginBottom:SPACING.space_4
   }
 })
