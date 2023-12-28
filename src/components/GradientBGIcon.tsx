@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { COLORS, SPACING } from '../theme/theme';
 import LinearGradient from 'react-native-linear-gradient';
+import Entypo from 'react-native-vector-icons/Ionicons'
 
 interface GradientBGIconProps {
     name: string;
@@ -18,6 +19,7 @@ const GradientBGIcon: React.FC<GradientBGIconProps> = ({ name, color, size }) =>
                 colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
                 style={styles.LinerGradientBG}
             />
+            <Entypo name={name} color={color} size={size} style={styles.icon}/>
         </View>
     );
 };
@@ -29,15 +31,16 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: COLORS.secondaryDarkGreyHex,
         borderRadius: SPACING.space_12,
+        display:'flex',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: COLORS.secondaryDarkGreyHex,
         overflow: 'hidden',
     },
     LinerGradientBG: {
-        height: SPACING.space_36,
-        width: SPACING.space_36,
+        display:'flex',
         alignItems: 'center',
         justifyContent: 'center',
     },
+    icon:{padding:4},
 });
