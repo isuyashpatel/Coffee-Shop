@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   FlatList,
   ScrollView,
   StatusBar,
@@ -65,7 +66,30 @@ const HomeScreen = () => {
   const tabBarHeight = useBottomTabBarHeight()
 
   // search coffee
+  const searchCoffee=(search:string)=>{
+    if (search!='') {
+      ListRef?.current?.scrollToOffset({
+        animated:true,
+        offset:0,
+      });
+      setCategoryIndex({index:0,category:categories[0]});
+      setSortedCoffee([
+        ...CoffeeList.filter((item: any) =>
+          item.name.toLowerCase().includes(search.toLowerCase()),
+        ),
+      ]);
+    }
+  };
 
+  const resetSearchCoffee=()=>{
+    ListRef?.current?.scrollToOffset({
+      animated:true,
+      offset:0,
+    });
+    setCategoryIndex({index:0,category:categories[0]});
+    setSortedCoffee([...CoffeeList]);
+    setSearchText('');
+  }
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
@@ -80,7 +104,7 @@ const HomeScreen = () => {
         </Text>
         {/* SEARCH INPUT */}
         <View style={styles.InputContainerComponent}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => {searchCoffee(searchText);}}>
             <Feather
               style={styles.InputIcon}
               name="search"
@@ -95,11 +119,11 @@ const HomeScreen = () => {
           <TextInput
             placeholder="Find Your Coffee.."
             value={searchText}
-            onChangeText={(text) => setSearchText(text)}
+            onChangeText={(text) => {setSearchText(text);searchCoffee(searchText);}}
             placeholderTextColor={COLORS.primaryLightGreyHex}
             style={styles.TextInputContainer}
           />
-          {searchText.length>0?(<TouchableOpacity><AntDesign style={styles.InputIcon} name='close' size={FONTSIZE.size_16} color={COLORS.primaryLightGreyHex}/></TouchableOpacity>):(<></>)}
+          {searchText.length>0?(<TouchableOpacity onPress={()=>{resetSearchCoffee();}}><AntDesign style={styles.InputIcon} name='close' size={FONTSIZE.size_16} color={COLORS.primaryLightGreyHex}/></TouchableOpacity>):(<></>)}
         </View>
 
         {/* CATEGORY SCROLLER */}
@@ -152,6 +176,7 @@ const HomeScreen = () => {
         {/* Coffee Flatlist */}
         <FlatList
           horizontal
+          ListEmptyComponent={<View style={styles.EmptyListContainer}><Text style={styles.CategoryText}>No Coffee Available</Text></View>}
           showsHorizontalScrollIndicator={false}
           data={sortedCoffee}
           contentContainerStyle={styles.FlatListContainer}
@@ -271,6 +296,12 @@ const styles = StyleSheet.create({
     gap: SPACING.space_20,
     paddingVertical: SPACING.space_20,
     paddingHorizontal: SPACING.space_20,
+  },
+  EmptyListContainer:{
+    width:Dimensions.get('window').width-SPACING.space_30*2,
+    alignItems:'center',
+    justifyContent:'center',
+    paddingVertical:SPACING.space_36*2.8,
   },
   CoffeeBeansTitle: {
     fontSize: FONTSIZE.size_18,
