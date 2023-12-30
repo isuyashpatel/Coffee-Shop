@@ -67,7 +67,7 @@ export const useStore = create(
             state.CartPrice = totalprice.toFixed(2).toString();
           }),
         ),
-        addToFavoriteList: (type: string, id: string) =>
+        addToFavouriteList: (type: string, id: string) =>
         set(
           produce(state => {
             if (type == 'Coffee') {
@@ -97,7 +97,7 @@ export const useStore = create(
             }
           }),
         ),
-        deleteFromFavoriteList: (type: string, id: string) =>
+        deleteFromFavouriteList: (type: string, id: string) =>
         set(
           produce(state => {
             if (type == 'Coffee') {
