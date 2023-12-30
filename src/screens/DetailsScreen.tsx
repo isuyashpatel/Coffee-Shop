@@ -14,6 +14,9 @@ const DetailsScreen = ({ navigation, route }: any) => {
   const addToFavouriteList = useStore((state: any) => state.addToFavouriteList);
   const deleteFromFavouriteList = useStore((state: any) => state.deleteFromFavouriteList);
 
+  const addToCart = useStore((state: any) => state.addToCart);
+  const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
+
   const [price, setPrice] = useState(ItemOfIndex.prices[0]);
   const [fullDescription, setFullDescription] = useState(false)
 
@@ -25,6 +28,11 @@ const DetailsScreen = ({ navigation, route }: any) => {
     navigation.pop();
   }
 
+  const addToCartHandler=({id,index,name,roasted,imagelink_portrait,special_ingredient,type,price}:any)=>{
+    addToCart({id,index,name,roasted,imagelink_portrait,special_ingredient,type,prices:[{...price,quantity:1}]});
+    calculateCartPrice();
+    navigation.navigate('Cart');
+  }
 
 
   return (
@@ -34,7 +42,7 @@ const DetailsScreen = ({ navigation, route }: any) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.ScrollViewFlex}
       >
-        <ImageBackgroundInfo EnablebackHandler={true} imagelink_portrait={ItemOfIndex.imagelink_portrait} type={ItemOfIndex.type} id={ItemOfIndex.id} favourite={ItemOfIndex.favourite} name={ItemOfIndex.name} special_ingreidient={ItemOfIndex.special_ingredient} ingredients={ItemOfIndex.ingredients} average_rating={ItemOfIndex.average_rating} ratings_count={ItemOfIndex.ratings_count} roasted={ItemOfIndex.roasted} BackHandler={BackHandler} ToggleFavourite={ToggleFavourite} />
+        <ImageBackgroundInfo EnablebackHandler={true} imagelink_portrait={ItemOfIndex.imagelink_portrait} type={ItemOfIndex.type} id={ItemOfIndex.id} favourite={ItemOfIndex.favourite} name={ItemOfIndex.name} special_ingredient={ItemOfIndex.special_ingredient} ingredients={ItemOfIndex.ingredients} average_rating={ItemOfIndex.average_rating} ratings_count={ItemOfIndex.ratings_count} roasted={ItemOfIndex.roasted} BackHandler={BackHandler} ToggleFavourite={ToggleFavourite} />
         <View style={styles.FooterInfoArea}>
           <Text style={styles.InfoTitle}>Desciption</Text>
           {fullDescription ?
@@ -55,7 +63,7 @@ const DetailsScreen = ({ navigation, route }: any) => {
             ))}
           </View>
         </View>
-        <PaymentFooter price={price} buttonTitle='Add to Cart' buttonPressHandler={()=>{}}/>
+        <PaymentFooter price={price} buttonTitle='Add to Cart' buttonPressHandler={()=>{addToCartHandler({id:ItemOfIndex.id,index:ItemOfIndex.index,name:ItemOfIndex.name,roasted:ItemOfIndex.roasted,imagelink_square:ItemOfIndex.imagelink_square,special_ingredient:ItemOfIndex.special_ingredient,type:ItemOfIndex.type,price:price})}}/>
       </ScrollView>
     </View>
   )
@@ -70,6 +78,7 @@ const styles = StyleSheet.create({
   },
   ScrollViewFlex: {
     flexGrow: 1,
+    justifyContent:'space-between'
   },
   FooterInfoArea: {
     padding: SPACING.space_20

@@ -11,7 +11,7 @@ interface ImageBackgroundInfoProps {
   id: string;
   favourite: string;
   name: string;
-  special_ingreidient: string;
+  special_ingredient: string;
   ingredients: string;
   average_rating: number;
   ratings_count: string;
@@ -19,7 +19,7 @@ interface ImageBackgroundInfoProps {
   BackHandler?: any;
   ToggleFavourite: any;
 }
-const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({ EnablebackHandler, imagelink_portrait, type, id, favourite, name, special_ingreidient, ingredients, average_rating, ratings_count, roasted, BackHandler, ToggleFavourite }) => {
+const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({ EnablebackHandler, imagelink_portrait, type, id, favourite, name, special_ingredient, ingredients, average_rating, ratings_count, roasted, BackHandler, ToggleFavourite }) => {
   return (
     <View>
       <ImageBackground source={imagelink_portrait} style={styles.ItemBackgroundImage}>
@@ -46,7 +46,7 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({ EnablebackHan
             <View style={styles.InfoContainerRow}>
               <View>
                 <Text style={styles.ItemTitleText}>{name}</Text>
-                <Text style={styles.ItemSubtitleText}>{special_ingreidient}</Text>
+                <Text style={styles.ItemSubtitleText}>{special_ingredient}</Text>
               </View>
               <View style={styles.ItemPropertiesContainer}>
                  <View style={styles.ProperFirst}>
