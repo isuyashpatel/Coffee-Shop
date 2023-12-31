@@ -13,7 +13,7 @@ export const useStore = create(
     FavouriteList: [],
     CartList: [],
     OrderHistoryList: [],
-    addToCart: (cartItem: any) =>
+    addToCart: (cartItem: any):void =>
       set(produce(state => {
         let found = false;
         for (let i = 0; i < state.CartList.length; i++) {
@@ -67,7 +67,7 @@ export const useStore = create(
           state.CartPrice = totalprice.toFixed(2).toString();
         }),
       ),
-    addToFavouriteList: (type: string, id: string) =>
+    addToFavouriteList: (type: string, id: string):void =>
       set(
         produce(state => {
           if (type == 'Coffee') {
@@ -97,7 +97,7 @@ export const useStore = create(
           }
         }),
       ),
-    deleteFromFavouriteList: (type: string, id: string) =>
+    deleteFromFavouriteList: (type: string, id: string):void =>
       set(
         produce(state => {
           if (type == 'Coffee') {
@@ -148,7 +148,7 @@ export const useStore = create(
           }
         }),
       ),
-    decrementCartItemQuantity: (id: string, size: string) =>
+    decrementCartItemQuantity: (id: string, size: string):void =>
       set(
         produce(state => {
           for (let i = 0; i < state.CartList.length; i++) {
@@ -175,7 +175,7 @@ export const useStore = create(
           }
         }),
       ),
-    addToOrderHistoryListFromCart: () =>
+    addToOrderHistoryListFromCart: ():void =>
       set(
         produce(state => {
           let temp = state.CartList.reduce(
