@@ -28,8 +28,8 @@ const DetailsScreen = ({ navigation, route }: any) => {
     navigation.pop();
   }
 
-  const addToCartHandler=({id,index,name,roasted,imagelink_portrait,special_ingredient,type,price}:any)=>{
-    addToCart({id,index,name,roasted,imagelink_portrait,special_ingredient,type,prices:[{...price,quantity:1}]});
+  const addToCartHandler=({id,index,name,roasted,imagelink_square,special_ingredient,type,price}:any)=>{
+    addToCart({id,index,name,roasted,imagelink_square,special_ingredient,type,prices:[{...price,quantity:1}]});
     calculateCartPrice();
     navigation.navigate('Cart');
   }
