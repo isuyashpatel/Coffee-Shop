@@ -26,8 +26,7 @@ const CartScreen = ({ navigation, route }: any) => {
   )
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice)
 
-  const tabBarHeight = useBottomTabBarHeight()
-  console.log(CartList.length, 'cartlist')
+  const tabBarHeight = useBottomTabBarHeight();
 
   const buttonPressHandler = () => {
     navigation.push('Payment')
