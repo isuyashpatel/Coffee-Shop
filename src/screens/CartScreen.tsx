@@ -1,4 +1,11 @@
-import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import React from 'react'
 import { useStore } from '../store/store'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
@@ -19,13 +26,20 @@ const CartScreen = ({ navigation, route }: any) => {
   )
   const calculateCartPrice = useStore((state: any) => state.calculateCartPrice)
 
-  const tabBarHeight = useBottomTabBarHeight()
-  console.log(CartList.length, 'cartlist')
+  const tabBarHeight = useBottomTabBarHeight();
 
   const buttonPressHandler = () => {
     navigation.push('Payment')
   }
 
+  const incrementCartItemQuantityHandler = (id: string, size: string) => {
+    incrementCartItemQuantity(id, size)
+    calculateCartPrice()
+  }
+  const decrementCartItemQuantityHandler = (id: string, size: string) => {
+    decrementCartItemQuantity(id, size)
+    calculateCartPrice()
+  }
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
@@ -43,14 +57,36 @@ const CartScreen = ({ navigation, route }: any) => {
             ) : (
               <View style={styles.ListItemContainer}>
                 {CartList.map((data: any) => (
-                  <TouchableOpacity onPress={() => { }} key={data.id}>
-                    <CartItem id={data.id} name={data.name} imagelink_square={data.imagelink_square} special_ingredient={data.special_ingredient} roasted={data.roasted} prices={data.prices} type={data.type} incrementCartItemQuantityHandler={()=>{}} decrementCartItemQuantityHandler={()=>{}}/>
+                  <TouchableOpacity onPress={() => {navigation.push('Details',{index:data.index,id:data.id,type:data.type})}} key={data.id}>
+                    <CartItem
+                      id={data.id}
+                      name={data.name}
+                      imagelink_square={data.imagelink_square}
+                      special_ingredient={data.special_ingredient}
+                      roasted={data.roasted}
+                      prices={data.prices}
+                      type={data.type}
+                      incrementCartItemQuantityHandler={
+                        incrementCartItemQuantityHandler
+                      }
+                      decrementCartItemQuantityHandler={
+                        decrementCartItemQuantityHandler
+                      }
+                    />
                   </TouchableOpacity>
                 ))}
               </View>
             )}
           </View>
-          {CartList.length ? <PaymentFooter buttonTitle='Pay' price={{ price: CartPrice, currency: '$' }} buttonPressHandler={buttonPressHandler} /> : <></>}
+          {CartList.length ? (
+            <PaymentFooter
+              buttonTitle="Pay"
+              price={{ price: CartPrice, currency: '$' }}
+              buttonPressHandler={buttonPressHandler}
+            />
+          ) : (
+            <></>
+          )}
         </View>
       </ScrollView>
     </View>
