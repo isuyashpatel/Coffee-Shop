@@ -75,7 +75,7 @@ export const useStore = create(
               if (state.CoffeeList[i].id == id) {
                 if (state.CoffeeList[i].favourite == false) {
                   state.CoffeeList[i].favourite = true;
-                  state.FavoritesList.unshift(state.CoffeeList[i]);
+                  state.FavouriteList.unshift(state.CoffeeList[i]);
                 } else {
                   state.CoffeeList[i].favourite = false;
                 }
