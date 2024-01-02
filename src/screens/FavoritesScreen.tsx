@@ -7,6 +7,7 @@ import EmptyListAnimation from '../components/EmptyListAnimation'
 import CartItem from '../components/CartItem'
 import PaymentFooter from '../components/PaymentFooter'
 import { COLORS, SPACING } from '../theme/theme'
+import FavouritesItemCard from '../components/FavouritesItemCard'
 
 const FavoritesScreen = ({navigation}:any) => {
   const FavouriteList=useStore((state:any)=>state.FavouriteList);
@@ -36,7 +37,20 @@ const FavoritesScreen = ({navigation}:any) => {
               <View style={styles.ListItemContainer}>
                 {FavouriteList.map((data: any) => (
                   <TouchableOpacity onPress={() => {navigation.push('Details',{index:data.index,id:data.id,type:data.type})}} key={data.id}>
-                  
+                  <FavouritesItemCard
+                  id={data.id}
+                  imagelink_portrait={data.imagelink_portrait}
+                  name={data.name}
+                  special_ingredient={data.special_ingredient}
+                  type={data.type}
+                  ingredients={data.ingredients}
+                  average_rating={data.average_rating}
+                  ratings_count={data.ratings_count}
+                  roasted={data.roasted}
+                  description={data.description}
+                  favourite={data.favourite}
+                  ToggleFavouriteItem={ToggleFavourite}
+                  />
                   </TouchableOpacity>
                 ))}
               </View>
