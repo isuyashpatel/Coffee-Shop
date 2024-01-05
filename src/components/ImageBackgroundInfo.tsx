@@ -9,7 +9,7 @@ interface ImageBackgroundInfoProps {
   imagelink_portrait: ImageProps;
   type: string;
   id: string;
-  favourite: string;
+  favourite: boolean;
   name: string;
   special_ingredient: string;
   ingredients: string;
