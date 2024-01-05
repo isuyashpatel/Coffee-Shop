@@ -4,8 +4,6 @@ import { useStore } from '../store/store'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import HeaderBar from '../components/HeaderBar'
 import EmptyListAnimation from '../components/EmptyListAnimation'
-import CartItem from '../components/CartItem'
-import PaymentFooter from '../components/PaymentFooter'
 import { COLORS, SPACING } from '../theme/theme'
 import FavouritesItemCard from '../components/FavouritesItemCard'
 
