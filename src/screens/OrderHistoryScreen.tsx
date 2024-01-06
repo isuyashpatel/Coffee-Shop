@@ -6,6 +6,7 @@ import { COLORS, SPACING } from '../theme/theme'
 import HeaderBar from '../components/HeaderBar'
 import EmptyListAnimation from '../components/EmptyListAnimation'
 import PopUpAnimation from '../components/PopUpAnimation'
+import OrderHistoryCard from '../components/OrderHistoryCard'
 
 const OrderHistoryScreen = () => {
   const OrderHistoryList = useStore((state: any) => state.OrderHistoryList)
@@ -37,7 +38,7 @@ const OrderHistoryScreen = () => {
             ) : (
               <View style={styles.ListItemContainer}>
                 {OrderHistoryList.map((data:any,index:any)=>(
-                  <></>
+                  <OrderHistoryCard/>
                 ))}
                 </View>)}
           </View>
