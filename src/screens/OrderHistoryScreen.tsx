@@ -9,9 +9,11 @@ import PopUpAnimation from '../components/PopUpAnimation'
 import OrderHistoryCard from '../components/OrderHistoryCard'
 
 const OrderHistoryScreen = () => {
+  
   const OrderHistoryList = useStore((state: any) => state.OrderHistoryList)
   const tabBarHeight = useBottomTabBarHeight();
   const [showAnimation, setShowAnimation] = useState(false);
+  
 
   return (
     <View style={styles.ScreenContainer}>
@@ -38,7 +40,7 @@ const OrderHistoryScreen = () => {
             ) : (
               <View style={styles.ListItemContainer}>
                 {OrderHistoryList.map((data:any,index:any)=>(
-                  <OrderHistoryCard/>
+                  <OrderHistoryCard key={index.toString()} navigationHandler={()=>{}} CartItem={data.CartList} CartListPrice={data.CartListPrice} OrderDate={data.OrderDate} />
                 ))}
                 </View>)}
           </View>
