@@ -8,13 +8,18 @@ import EmptyListAnimation from '../components/EmptyListAnimation'
 import PopUpAnimation from '../components/PopUpAnimation'
 import OrderHistoryCard from '../components/OrderHistoryCard'
 
-const OrderHistoryScreen = () => {
-  
+const OrderHistoryScreen = ({ navigation }: any) => {
   const OrderHistoryList = useStore((state: any) => state.OrderHistoryList)
-  const tabBarHeight = useBottomTabBarHeight();
-  const [showAnimation, setShowAnimation] = useState(false);
-  
+  const tabBarHeight = useBottomTabBarHeight()
+  const [showAnimation, setShowAnimation] = useState(false)
 
+  const navigationHandler = ({ index, id, type }: any) => {
+    navigation.push('Details', {
+      index,
+      id,
+      type,
+    })
+  }
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
@@ -39,10 +44,17 @@ const OrderHistoryScreen = () => {
               <EmptyListAnimation title={'No Order History'} />
             ) : (
               <View style={styles.ListItemContainer}>
-                {OrderHistoryList.map((data:any,index:any)=>(
-                  <OrderHistoryCard key={index.toString()} navigationHandler={()=>{}} CartItem={data.CartList} CartListPrice={data.CartListPrice} OrderDate={data.OrderDate} />
+                {OrderHistoryList.map((data: any, index: any) => (
+                  <OrderHistoryCard
+                    key={index.toString()}
+                    navigationHandler={navigationHandler}
+                    CartItem={data.CartList}
+                    CartListPrice={data.CartListPrice}
+                    OrderDate={data.OrderDate}
+                  />
                 ))}
-                </View>)}
+              </View>
+            )}
           </View>
         </View>
       </ScrollView>
@@ -58,7 +70,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primaryBlackHex,
   },
   LottieAnimation: {
-    height:250
+    height: 250,
   },
   ScrollViewFlex: {
     flexGrow: 1,
@@ -70,8 +82,8 @@ const styles = StyleSheet.create({
   ItemContainer: {
     flex: 1,
   },
-  ListItemContainer:{
+  ListItemContainer: {
     paddingHorizontal: SPACING.space_20,
     gap: SPACING.space_20,
-  }
+  },
 })
