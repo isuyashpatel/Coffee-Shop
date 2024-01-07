@@ -87,9 +87,9 @@ const PaymentScreen = ({navigation, route}: any) => {
               navigation.pop();
             }}>
             <GradientBGIcon
-              name="left"
+              name="chevron-back"
               color={COLORS.primaryLightGreyHex}
-              size={FONTSIZE.size_16}
+              size={FONTSIZE.size_30}
             />
           </TouchableOpacity>
           <Text style={styles.HeaderText}>Payments</Text>
