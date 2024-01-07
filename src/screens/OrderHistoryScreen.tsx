@@ -1,8 +1,15 @@
-import { ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native'
+import {
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import React, { useState } from 'react'
 import { useStore } from '../store/store'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
-import { COLORS, SPACING } from '../theme/theme'
+import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme'
 import HeaderBar from '../components/HeaderBar'
 import EmptyListAnimation from '../components/EmptyListAnimation'
 import PopUpAnimation from '../components/PopUpAnimation'
@@ -20,13 +27,20 @@ const OrderHistoryScreen = ({ navigation }: any) => {
       type,
     })
   }
+
+  const buttonPressHandler=()=>{
+    setShowAnimation(true);
+    setTimeout(()=>{
+      setShowAnimation(false)
+    },2000)
+  }
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
       {showAnimation ? (
         <PopUpAnimation
           style={styles.LottieAnimation}
-          source={require('../lottie/successful.json')}
+          source={require('../lottie/download.json')}
         />
       ) : (
         <></>
@@ -56,6 +70,13 @@ const OrderHistoryScreen = ({ navigation }: any) => {
               </View>
             )}
           </View>
+          {OrderHistoryList.length ? (
+            <TouchableOpacity style={styles.DownloadButton} onPress={()=>{buttonPressHandler();}}>
+              <Text style={styles.ButtonText}>Download</Text>
+            </TouchableOpacity>
+          ) : (
+            <></>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -85,5 +106,19 @@ const styles = StyleSheet.create({
   ListItemContainer: {
     paddingHorizontal: SPACING.space_20,
     gap: SPACING.space_20,
+  },
+  DownloadButton: {
+    marginTop:SPACING.space_10,
+    marginHorizontal:SPACING.space_20,
+    backgroundColor:COLORS.primaryOrangeHex,
+    alignItems:'center',
+    justifyContent:'center',
+    height:SPACING.space_36*2,
+    borderRadius:BORDERRADIUS.radius_20
+  },
+  ButtonText: {
+    fontFamily:FONTFAMILY.poppins_semibold,
+    fontSize:FONTSIZE.size_18,
+    color:COLORS.primaryWhiteHex,
   },
 })
