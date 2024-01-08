@@ -83,11 +83,12 @@ export const useStore = create(
               }
             }
           } else if (type == 'Bean') {
+            // console.log(state.BeanList,"hello g",state.FavouriteList);
             for (let i = 0; i < state.BeanList.length; i++) {
               if (state.BeanList[i].id == id) {
                 if (state.BeanList[i].favourite == false) {
                   state.BeanList[i].favourite = true;
-                  state.FavoritesList.unshift(state.BeanList[i]);
+                  state.FavouriteList.unshift(state.BeanList[i]);
                 } else {
                   state.BeanList[i].favourite = false;
                 }
@@ -111,7 +112,7 @@ export const useStore = create(
                 break;
               }
             }
-          } else if (type == 'Beans') {
+          } else if (type == 'Bean') {
             for (let i = 0; i < state.BeanList.length; i++) {
               if (state.BeanList[i].id == id) {
                 if (state.BeanList[i].favourite == true) {
@@ -124,13 +125,13 @@ export const useStore = create(
             }
           }
           let spliceIndex = -1;
-          for (let i = 0; i < state.FavoritesList.length; i++) {
-            if (state.FavoritesList[i].id == id) {
+          for (let i = 0; i < state.FavouriteList.length; i++) {
+            if (state.FavouriteList[i].id == id) {
               spliceIndex = i;
               break;
             }
           }
-          state.FavoritesList.splice(spliceIndex, 1);
+          state.FavouriteList.splice(spliceIndex, 1);
         }),
       ),
     incrementCartItemQuantity: (id: string, size: string): void =>
