@@ -83,7 +83,6 @@ export const useStore = create(
               }
             }
           } else if (type == 'Bean') {
-            // console.log(state.BeanList,"hello g",state.FavouriteList);
             for (let i = 0; i < state.BeanList.length; i++) {
               if (state.BeanList[i].id == id) {
                 if (state.BeanList[i].favourite == false) {
