@@ -5,7 +5,8 @@ import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 import android.os.Bundle;
-
+// react-native-splash-screen >= 0.3.1
+import org.devio.rn.splashscreen.SplashScreen;
 class MainActivity : ReactActivity() {
 
   /**
@@ -14,6 +15,7 @@ class MainActivity : ReactActivity() {
    */
   override fun getMainComponentName(): String = "Coffe"
 override fun onCreate(savedInstanceState: Bundle?) {
+  SplashScreen.show(this);
     super.onCreate(null)
   }
   /**
