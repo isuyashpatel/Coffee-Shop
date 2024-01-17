@@ -90,6 +90,9 @@ android {
             keyPassword 'android'
         }
     }
+     lintOptions {
+        baseline file("lint-baseline.xml")
+    }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -108,6 +111,12 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-splash-screen')
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
