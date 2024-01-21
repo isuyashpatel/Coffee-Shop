@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { LogBox, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import HomeScreen from './src/screens/HomeScreen'
 import DetailsScreen from './src/screens/DetailsScreen'
@@ -13,7 +13,7 @@ import AuthScreen from './src/screens/AuthScreen'
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-
+  LogBox.ignoreAllLogs();
   const auth= useStore((state:any)=>state.auth)
   useEffect(() => {
     
