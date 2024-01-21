@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   StatusBar,
   StyleSheet,
@@ -19,6 +20,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Dimensions } from 'react-native'
 import OTPInputView from '@twotalltotems/react-native-otp-input'
+import emailSchema from '../validation/zod'
 
 const windowHeight = Dimensions.get('window').height
 
@@ -27,9 +29,26 @@ const AuthScreen = () => {
     (state: any): any => state.userAuthentication,
   )
   const [mail, setMail] = useState('')
-  const [validationMail,setValidationMail]=useState(false);
+  const [validationMail, setValidationMail] = useState(false);
+  const [code,setCode]=useState('')
   const handleMailChange = (text: string) => {
     setMail(text)
+  }
+
+  const handleValidateEmail = () => {
+    
+    try {
+      emailSchema.parse(mail);
+      setValidationMail(true)
+    } catch (error) {
+      Alert.alert('Error', 'Invalid email format');
+    }
+  };
+
+  const VerifyOtp = () => {
+    console.log(code);
+    
+    userAuthentication();
   }
   return (
     <View style={styles.ScreenContainer}>
@@ -41,7 +60,7 @@ const AuthScreen = () => {
         />
         <Text style={styles.Quote}>Keep calm and drink tea.</Text>
         <View style={styles.MailContainer}>
-          {!validationMail?<View style={styles.InputContainer}>
+          {!validationMail ? <View style={styles.InputContainer}>
             <Ionicons
               name="mail"
               size={FONTSIZE.size_24}
@@ -54,37 +73,38 @@ const AuthScreen = () => {
               value={mail}
             />
           </View>
-          :
-          <>
-          <Text style={styles.OtpText}>OTP sent to email.</Text>
-          <OTPInputView
-            style={styles.OtpContainer}
-            pinCount={6}
-            // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-            // onCodeChanged = {code => { this.setState({code})}}
-            autoFocusOnLoad
-            codeInputFieldStyle={styles.underlineStyleBase}
-            codeInputHighlightStyle={styles.underlineStyleHighLighted}
-            onCodeFilled={(code => {
-              console.log(`Code is ${code}, you are good to go!`)
-            })}
-          />
-          </>
+            :
+            <>
+              <Text style={styles.OtpText}>OTP sent to email.</Text>
+              <OTPInputView
+                style={styles.OtpContainer}
+                pinCount={6}
+                autoFocusOnLoad
+                codeInputFieldStyle={styles.underlineStyleBase}
+                codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                onCodeFilled={(code => {
+                  setCode(code)
+                })}
+              />
+            </>
           }
-          <TouchableOpacity
-            onPress={() => {
-              userAuthentication();
-              setValidationMail(true)
-            }}
+          {validationMail ? <TouchableOpacity
+            onPress={VerifyOtp}
+          >
+            <View style={styles.AuthButton}>
+              <Text style={styles.Authenticate}>Verify</Text>
+            </View>
+          </TouchableOpacity> : <TouchableOpacity
+            onPress={handleValidateEmail}
           >
             <View style={styles.AuthButton}>
               <Text style={styles.Authenticate}>Continue</Text>
             </View>
-          </TouchableOpacity>
-        {validationMail?<TouchableOpacity onPress={()=>{setValidationMail(false)}}>
-          <Text style={styles.Back}>Back</Text>
-        </TouchableOpacity>:null}
-      </View>
+          </TouchableOpacity>}
+          {validationMail ? <TouchableOpacity onPress={() => { setValidationMail(false) }}>
+            <Text style={styles.Back}>Back</Text>
+          </TouchableOpacity> : null}
+        </View>
       </View>
     </View>
   )
@@ -152,18 +172,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  OtpContainer:{
+  OtpContainer: {
     width: 240,
     height: 50,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  OtpText:{
-    color:COLORS.primaryWhiteHex,
-    fontSize:FONTSIZE.size_12,
-    fontFamily:FONTFAMILY.poppins_extrabold,
-    textAlign:'center'
+  OtpText: {
+    color: COLORS.primaryWhiteHex,
+    fontSize: FONTSIZE.size_12,
+    fontFamily: FONTFAMILY.poppins_extrabold,
+    textAlign: 'center'
   },
   borderStyleHighLighted: {
     borderColor: "#03DAC6",
@@ -173,24 +193,24 @@ const styles = StyleSheet.create({
     height: 50,
     borderWidth: 1,
     shadowColor: 'rgba(217, 180, 124, 0.25)',
-        shadowOffset: {
-          width: -1,
-          height: -1,
-        },
-        shadowOpacity: 1,
-        shadowRadius: 4,
-        backgroundColor:COLORS.primaryWhiteHex,
-        borderRadius:BORDERRADIUS.radius_8,
-        color:COLORS.primaryBlackHex
+    shadowOffset: {
+      width: -1,
+      height: -1,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    backgroundColor: COLORS.primaryWhiteHex,
+    borderRadius: BORDERRADIUS.radius_8,
+    color: COLORS.primaryBlackHex
   },
   underlineStyleHighLighted: {
     borderColor: "#03DAC6",
   },
-  Back:{
-    color:COLORS.primaryWhiteHex,
-    fontSize:FONTSIZE.size_12,
-    fontFamily:FONTFAMILY.poppins_extrabold,
-    textAlign:'center',
-    textDecorationLine:'underline'
+  Back: {
+    color: COLORS.primaryWhiteHex,
+    fontSize: FONTSIZE.size_12,
+    fontFamily: FONTFAMILY.poppins_extrabold,
+    textAlign: 'center',
+    textDecorationLine: 'underline'
   },
 })
