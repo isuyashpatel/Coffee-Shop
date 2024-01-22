@@ -21,6 +21,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Dimensions } from 'react-native'
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import emailSchema from '../validation/zod'
+import axios from 'axios'
+import AuthService from '../services'
 
 const windowHeight = Dimensions.get('window').height
 
@@ -29,27 +31,38 @@ const AuthScreen = () => {
     (state: any): any => state.userAuthentication,
   )
   const [mail, setMail] = useState('')
-  const [validationMail, setValidationMail] = useState(false);
-  const [code,setCode]=useState('')
+  const [validationMail, setValidationMail] = useState(false)
+  const [code, setCode] = useState('')
   const handleMailChange = (text: string) => {
     setMail(text)
   }
 
-  const handleValidateEmail = () => {
-    
+  const handleValidateEmail = async () => {
     try {
       emailSchema.parse(mail);
-      setValidationMail(true)
-    } catch (error) {
-      Alert.alert('Error', 'Invalid email format');
+      const response = await AuthService.sendLoginOTP(mail);
+
+      if (response.status === 200) {
+        setValidationMail(true);
+      } else {
+        Alert.alert('Something Unwanted happened');
+      }
+    } catch (error:any) {
+      Alert.alert('Error', error.message || 'Something went wrong');
     }
   };
-
-  const VerifyOtp = () => {
-    console.log(code);
-    
-    userAuthentication();
-  }
+  const VerifyOtp = async () => {
+    try {
+      const response = await AuthService.verifyLoginOTP(mail, code);
+      if (response.status === 200) {
+        userAuthentication();
+      } else {
+        Alert.alert('Wrong Otp');
+      }
+    } catch (error) {
+      Alert.alert('Something Went wrong');
+    }
+  };
   return (
     <View style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
@@ -60,20 +73,21 @@ const AuthScreen = () => {
         />
         <Text style={styles.Quote}>Keep calm and drink tea.</Text>
         <View style={styles.MailContainer}>
-          {!validationMail ? <View style={styles.InputContainer}>
-            <Ionicons
-              name="mail"
-              size={FONTSIZE.size_24}
-              color={COLORS.secondaryLightGreyHex}
-            />
-            <TextInput
-              style={styles.mail}
-              placeholder="yourmail@gmail.com"
-              onChangeText={handleMailChange}
-              value={mail}
-            />
-          </View>
-            :
+          {!validationMail ? (
+            <View style={styles.InputContainer}>
+              <Ionicons
+                name="mail"
+                size={FONTSIZE.size_24}
+                color={COLORS.secondaryLightGreyHex}
+              />
+              <TextInput
+                style={styles.mail}
+                placeholder="yourmail@gmail.com"
+                onChangeText={handleMailChange}
+                value={mail}
+              />
+            </View>
+          ) : (
             <>
               <Text style={styles.OtpText}>OTP sent to email.</Text>
               <OTPInputView
@@ -82,28 +96,34 @@ const AuthScreen = () => {
                 autoFocusOnLoad
                 codeInputFieldStyle={styles.underlineStyleBase}
                 codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                onCodeFilled={(code => {
+                onCodeFilled={(code) => {
                   setCode(code)
-                })}
+                }}
               />
             </>
-          }
-          {validationMail ? <TouchableOpacity
-            onPress={VerifyOtp}
-          >
-            <View style={styles.AuthButton}>
-              <Text style={styles.Authenticate}>Verify</Text>
-            </View>
-          </TouchableOpacity> : <TouchableOpacity
-            onPress={handleValidateEmail}
-          >
-            <View style={styles.AuthButton}>
-              <Text style={styles.Authenticate}>Continue</Text>
-            </View>
-          </TouchableOpacity>}
-          {validationMail ? <TouchableOpacity onPress={() => { setValidationMail(false) }}>
-            <Text style={styles.Back}>Back</Text>
-          </TouchableOpacity> : null}
+          )}
+          {validationMail ? (
+            <TouchableOpacity onPress={VerifyOtp}>
+              <View style={styles.AuthButton}>
+                <Text style={styles.Authenticate}>Verify</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={handleValidateEmail}>
+              <View style={styles.AuthButton}>
+                <Text style={styles.Authenticate}>Continue</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          {validationMail ? (
+            <TouchableOpacity
+              onPress={() => {
+                setValidationMail(false)
+              }}
+            >
+              <Text style={styles.Back}>Back</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
     </View>
@@ -183,10 +203,10 @@ const styles = StyleSheet.create({
     color: COLORS.primaryWhiteHex,
     fontSize: FONTSIZE.size_12,
     fontFamily: FONTFAMILY.poppins_extrabold,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   borderStyleHighLighted: {
-    borderColor: "#03DAC6",
+    borderColor: '#03DAC6',
   },
   underlineStyleBase: {
     width: 36,
@@ -201,16 +221,16 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     backgroundColor: COLORS.primaryWhiteHex,
     borderRadius: BORDERRADIUS.radius_8,
-    color: COLORS.primaryBlackHex
+    color: COLORS.primaryBlackHex,
   },
   underlineStyleHighLighted: {
-    borderColor: "#03DAC6",
+    borderColor: '#03DAC6',
   },
   Back: {
     color: COLORS.primaryWhiteHex,
     fontSize: FONTSIZE.size_12,
     fontFamily: FONTFAMILY.poppins_extrabold,
     textAlign: 'center',
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   },
 })
