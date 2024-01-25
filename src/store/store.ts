@@ -7,6 +7,8 @@ import BeansData from "../data/BeansData";
 
 export const useStore = create(
   persist((set) => ({
+    auth:false,
+    userAuthentication:():void=>set(produce(state=>({auth:true}))),
     CoffeeList: CoffeeData,
     BeanList: BeansData,
     CartPrice: 0,
