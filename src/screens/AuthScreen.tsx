@@ -1,6 +1,8 @@
 import {
   Alert,
   Image,
+  KeyboardAvoidingView,
+  Platform,
   StatusBar,
   StyleSheet,
   Text,
@@ -21,7 +23,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Dimensions } from 'react-native'
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import emailSchema from '../validation/zod'
-import axios from 'axios'
 import AuthService from '../services'
 
 const windowHeight = Dimensions.get('window').height
@@ -33,38 +34,50 @@ const AuthScreen = () => {
   const [mail, setMail] = useState('')
   const [validationMail, setValidationMail] = useState(false)
   const [code, setCode] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const handleMailChange = (text: string) => {
     setMail(text)
   }
 
   const handleValidateEmail = async () => {
+    setIsLoading(true)
     try {
       emailSchema.parse(mail);
+      
       const response = await AuthService.sendLoginOTP(mail);
 
-      if (response.status === 200) {
+      if (response.status === 9999) {
+        setIsLoading(false)
         setValidationMail(true);
       } else {
+        setIsLoading(false)
         Alert.alert('Something Unwanted happened');
       }
     } catch (error:any) {
+      setIsLoading(false)
       Alert.alert('Error', error.message || 'Something went wrong');
     }
   };
   const VerifyOtp = async () => {
+    setIsLoading(true)
     try {
       const response = await AuthService.verifyLoginOTP(mail, code);
-      if (response.status === 200) {
+      if (response===true) {
+        setIsLoading(false)
         userAuthentication();
       } else {
+        setIsLoading(false)
         Alert.alert('Wrong Otp');
       }
     } catch (error) {
+      setIsLoading(false)
       Alert.alert('Something Went wrong');
     }
   };
   return (
-    <View style={styles.ScreenContainer}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.ScreenContainer}>
       <StatusBar backgroundColor={COLORS.primaryBlackHex} />
       <View style={styles.AuthContainer}>
         <Image
@@ -105,13 +118,13 @@ const AuthScreen = () => {
           {validationMail ? (
             <TouchableOpacity onPress={VerifyOtp}>
               <View style={styles.AuthButton}>
-                <Text style={styles.Authenticate}>Verify</Text>
+                <Text style={styles.Authenticate}>{isLoading?'Processing...':'Verify'}</Text>
               </View>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity onPress={handleValidateEmail}>
               <View style={styles.AuthButton}>
-                <Text style={styles.Authenticate}>Continue</Text>
+                <Text style={styles.Authenticate}>{isLoading?'Processing...':'Continue'}</Text>
               </View>
             </TouchableOpacity>
           )}
@@ -126,7 +139,7 @@ const AuthScreen = () => {
           ) : null}
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
